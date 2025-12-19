@@ -1,0 +1,25 @@
+Write-Host "🚀 Reparando entorno de Node y npm..."
+
+# 1️⃣ Detiene cualquier proceso npm o node
+Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force
+Get-Process npm -ErrorAction SilentlyContinue | Stop-Process -Force
+
+# 2️⃣ Elimina configuraciones previas de npm
+Remove-Item "$env:AppData\npm" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "$env:AppData\npm-cache" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "$env:UserProfile\.npmrc" -Force -ErrorAction SilentlyContinue
+
+# 3️⃣ Limpia rutas del Python fantasma
+setx PATH "$($env:Path -split ';' | Where-Object {$_ -notmatch 'Python37'} -join ';')" /M
+
+# 4️⃣ Reinstala npm global limpio
+Write-Host "📦 Reinstalando npm global..."
+npm install -g npm@latest --force
+
+# 5️⃣ Muestra la versión final
+Write-Host "✅ Versión final de Node:"
+node -v
+Write-Host "✅ Versión final de npm:"
+npm -v
+Write-Host "✅ Entorno reparado correctamente. Reinicia PowerShell antes de volver a usar npm."
+

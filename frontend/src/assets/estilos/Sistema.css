@@ -1,0 +1,41 @@
+h1 {
+  color: #004d40;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: darkgray;
+}
+
+th {
+  background-color: #00695c;
+  color: white;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+tr:nth-child(even) {
+  background-color: #e0f2f1;
+}
+
+.volver-btn {
+  background-color: #00897b;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.volver-btn:hover {
+  background-color: #00695c;
+}

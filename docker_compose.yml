@@ -1,0 +1,30 @@
+services:
+  backend:
+    container_name: backend-tfe
+    build:
+      context: ./backend
+    ports:
+      - "5107:80"   # 🔥 CAMBIADO: antes 3001, ese puerto ya estaba ocupado
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ConnectionStrings__DefaultConnection: "Server=18.191.138.244,1433;Database=Daños_Dia;User Id=tfe;Password=Bryannsilva21*;TrustServerCertificate=True;Encrypt=False;"
+    networks:
+      - tfe-net
+
+  frontend:
+    container_name: tfe-frontend
+    build:
+      context: ./frontend
+    ports:
+      - "3002:80"
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL:  "http://backend-tfe/api/App"  # 🔥 PARA QUE EL FRONT CONSUMA AL BACKEND
+    networks:
+      - tfe-net
+
+networks:
+  tfe-net:
+    driver: bridge
+

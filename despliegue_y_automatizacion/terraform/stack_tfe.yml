@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  backend:
+    image: bryann444/tfe_backend:latest
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "5000:5000"
+    networks:
+      - tfe_backend
+
+  balanceador:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    deploy:
+      replicas: 1
+    networks:
+      - tfe_backend
+      - tfe_balanceador
+
+  frontend:
+    image: bryann444/tfe_frontend:latest
+    deploy:
+      replicas: 2
+    ports:
+      - "3000:80"
+    networks:
+      - tfe_balanceador
+
+networks:
+  tfe_backend:
+    driver: overlay
+  tfe_balanceador:
+    driver: overlay

@@ -1,0 +1,53 @@
+.personal-container {
+  padding: 2rem;
+  background-color: darkgray;
+  min-height: 100vh;
+}
+
+.personal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.personal-header h1 {
+  color: #333;
+}
+
+.volver-btn {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.volver-btn:hover {
+  background-color: #007bff;
+}
+
+.personal-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.personal-table th,
+.personal-table td {
+  border: 1px solid #ddd;
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.personal-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.personal-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
