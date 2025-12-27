@@ -28,14 +28,14 @@ pipeline {
                         passwordVariable: 'DOCKER_PASS'
                     )
                 ]) {
-                    sh """
-                    chmod 600 ${SSH_KEY}
+                    sh '''
+                    chmod 600 $SSH_KEY
 
-                    ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ubuntu@${MANAGER_IP} << EOF
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP << 'EOF'
                         set -e
-                        cd /opt/tfe
+                        cd /opt/tfe/tfe_devops_proyecto
 
-                        echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
                         docker build -t bryann444/tfe_backend:latest backend
                         docker build -t bryann444/tfe_frontend:latest frontend
@@ -43,7 +43,7 @@ pipeline {
                         docker push bryann444/tfe_backend:latest
                         docker push bryann444/tfe_frontend:latest
                     EOF
-                    """
+                    '''
                 }
             }
         }
@@ -56,14 +56,14 @@ pipeline {
                         keyFileVariable: 'SSH_KEY'
                     )
                 ]) {
-                    sh """
-                    chmod 600 ${SSH_KEY}
+                    sh '''
+                    chmod 600 $SSH_KEY
 
-                    ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ubuntu@${MANAGER_IP} << EOF
-                        cd /opt/tfe
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP << 'EOF'
+                        cd /opt/tfe/tfe_devops_proyecto
                         docker stack deploy -c stack_tfe.yml tfe-app
                     EOF
-                    """
+                    '''
                 }
             }
         }
@@ -71,10 +71,10 @@ pipeline {
 
     post {
         success {
-            echo 'CI/CD  del tfe ejecutado correctamente'
+            echo ' CI/CD ejecutado correctamente'
         }
         failure {
-            echo 'Error en el pipeline'
+            echo ' Error en el pipeline'
         }
     }
 }
