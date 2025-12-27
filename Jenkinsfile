@@ -3,12 +3,12 @@ pipeline {
 
     environment {
         MANAGER_IP = "98.90.35.107"
-        DOCKERHUB_USER = "bryann444"
+        APP_DIR = "/opt/tfe"
     }
 
     stages {
 
-        stage('Checkout') {
+        stage('Checkout Jenkins') {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/bryann21/tfe_devops_proyecto.git'
@@ -31,9 +31,11 @@ pipeline {
                     sh '''
                     chmod 600 $SSH_KEY
 
-                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP << 'EOF'
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP << EOF
                         set -e
-                        cd /opt/tfe/tfe_devops_proyecto
+                        cd $APP_DIR
+
+                        git pull origin main
 
                         echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
@@ -59,8 +61,8 @@ pipeline {
                     sh '''
                     chmod 600 $SSH_KEY
 
-                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP << 'EOF'
-                        cd /opt/tfe/tfe_devops_proyecto
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP << EOF
+                        cd $APP_DIR
                         docker stack deploy -c stack_tfe.yml tfe-app
                     EOF
                     '''
@@ -71,7 +73,7 @@ pipeline {
 
     post {
         success {
-            echo ' CI/CD ejecutado correctamente'
+            echo 'CI/CD ejecutado correctamente'
         }
         failure {
             echo ' Error en el pipeline'
