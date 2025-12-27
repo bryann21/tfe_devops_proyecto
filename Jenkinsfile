@@ -71,10 +71,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ CI/CD ejecutado correctamente'
+            echo 'CI/CD  del tfe ejecutado correctamente'
         }
         failure {
-            echo '❌ Error en el pipeline'
+            echo 'Error en el pipeline'
         }
     }
 }
