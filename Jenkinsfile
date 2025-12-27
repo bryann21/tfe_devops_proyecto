@@ -4,17 +4,9 @@ pipeline {
     environment {
         MANAGER_IP = "98.90.35.107"
         APP_DIR = "/opt/tfe"
-        DOCKERHUB_USER = "bryann444"
     }
 
     stages {
-
-        stage('Checkout') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/bryann21/tfe_devops_proyecto.git'
-            }
-        }
 
         stage('Build & Push Images (Remote Manager)') {
             steps {
@@ -33,13 +25,15 @@ pipeline {
                     chmod 600 $SSH_KEY
 
                     ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP "
-                        set -e &&
-                        cd $APP_DIR &&
-                        git pull origin main &&
-                        echo '$DOCKER_PASS' | docker login -u '$DOCKER_USER' --password-stdin &&
-                        docker build -t bryann444/tfe_backend:latest backend &&
-                        docker build -t bryann444/tfe_frontend:latest frontend &&
-                        docker push bryann444/tfe_backend:latest &&
+                        set -e
+                        cd $APP_DIR
+
+                        echo '$DOCKER_PASS' | docker login -u '$DOCKER_USER' --password-stdin
+
+                        docker build -t bryann444/tfe_backend:latest backend
+                        docker build -t bryann444/tfe_frontend:latest frontend
+
+                        docker push bryann444/tfe_backend:latest
                         docker push bryann444/tfe_frontend:latest
                     "
                     '''
@@ -59,21 +53,12 @@ pipeline {
                     chmod 600 $SSH_KEY
 
                     ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP "
-                        cd $APP_DIR &&
+                        cd $APP_DIR
                         docker stack deploy -c stack_tfe.yml tfe-app
                     "
                     '''
                 }
             }
-        }
-    }
-
-    post {
-        success {
-            echo ' CI/CD ejecutado correctamente'
-        }
-        failure {
-            echo 'Error en el pipeline'
         }
     }
 }
