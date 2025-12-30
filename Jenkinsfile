@@ -2,46 +2,59 @@ pipeline {
     agent any
 
     environment {
+        DOCKERHUB_USER = "bryann444"
         MANAGER_IP = "98.90.35.107"
-        APP_DIR = "/opt/tfe"
+        STACK_PATH = "/opt/tfe/stack_tfe.yml"
     }
 
     stages {
 
-        stage('Build & Push Images (Remote Manager)') {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Backend') {
+            steps {
+                dir('backend') {
+                    sh 'docker build -t $DOCKERHUB_USER/tfe_backend:latest .'
+                }
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                dir('frontend') {
+                    sh 'docker build -t $DOCKERHUB_USER/tfe_frontend:latest .'
+                }
+            }
+        }
+
+        stage('Login DockerHub') {
             steps {
                 withCredentials([
-                    sshUserPrivateKey(
-                        credentialsId: 'manager-ssh',
-                        keyFileVariable: 'SSH_KEY'
-                    ),
                     usernamePassword(
                         credentialsId: 'dockerhub-creds',
                         usernameVariable: 'DOCKER_USER',
                         passwordVariable: 'DOCKER_PASS'
                     )
                 ]) {
-                    sh '''
-                    chmod 600 $SSH_KEY
-
-                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP "
-                        set -e
-                        cd $APP_DIR
-
-                        echo '$DOCKER_PASS' | docker login -u '$DOCKER_USER' --password-stdin
-
-                        docker build -t bryann444/tfe_backend:latest backend
-                        docker build -t bryann444/tfe_frontend:latest frontend
-
-                        docker push bryann444/tfe_backend:latest
-                        docker push bryann444/tfe_frontend:latest
-                    "
-                    '''
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                 }
             }
         }
 
-        stage('Deploy Stack (Swarm)') {
+        stage('Push Images') {
+            steps {
+                sh '''
+                  docker push $DOCKERHUB_USER/tfe_backend:latest
+                  docker push $DOCKERHUB_USER/tfe_frontend:latest
+                '''
+            }
+        }
+
+        stage('Deploy Swarm') {
             steps {
                 withCredentials([
                     sshUserPrivateKey(
@@ -51,14 +64,20 @@ pipeline {
                 ]) {
                     sh '''
                     chmod 600 $SSH_KEY
-
-                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP "
-                        cd $APP_DIR
-                        docker stack deploy -c stack_tfe.yml tfe-app
-                    "
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP \
+                      "docker stack deploy -c $STACK_PATH tfe-app"
                     '''
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ CI/CD completado correctamente'
+        }
+        failure {
+            echo '❌ Fallo en el pipeline'
         }
     }
 }
