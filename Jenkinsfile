@@ -33,13 +33,11 @@ pipeline {
 
         stage('Login DockerHub') {
             steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'dockerhub-creds',
-                        usernameVariable: 'DOCKER_USER',
-                        passwordVariable: 'DOCKER_PASS'
-                    )
-                ]) {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
                     sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                 }
             }
@@ -56,15 +54,13 @@ pipeline {
 
         stage('Deploy Swarm') {
             steps {
-                withCredentials([
-                    sshUserPrivateKey(
-                        credentialsId: 'manager-ssh',
-                        keyFileVariable: 'SSH_KEY'
-                    )
-                ]) {
+                withCredentials([sshUserPrivateKey(
+                    credentialsId: 'manager-ssh',
+                    keyFileVariable: 'SSH_KEY'
+                )]) {
                     sh '''
-                    chmod 600 $SSH_KEY
-                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP \
+                      chmod 600 $SSH_KEY
+                      ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$MANAGER_IP \
                       "docker stack deploy -c $STACK_PATH tfe-app"
                     '''
                 }
