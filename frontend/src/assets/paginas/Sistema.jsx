@@ -13,7 +13,8 @@ export function Sistema() {
       try {
         
         const response = await axios.get('/App/smarts');
-        setSistemas(response.data);
+        const data = response.data?.data ?? [];
+        setSistemas(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Error al obtener los sistemas:", err);
         setError("No se pudo cargar la lista de sistemas.");

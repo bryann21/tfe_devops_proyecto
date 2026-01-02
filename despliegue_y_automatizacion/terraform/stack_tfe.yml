@@ -5,6 +5,10 @@ services:
     image: bryann444/tfe_backend:latest
     deploy:
       replicas: 2
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=3.150.38.7,1433;Database=Daños_Dia;User Id=tfe;Password=Bryannsilva21*;Encrypt=False;TrustServerCertificate=True;"
+    ports:
+      - "5000:80"
     networks:
       - tfe_net
 

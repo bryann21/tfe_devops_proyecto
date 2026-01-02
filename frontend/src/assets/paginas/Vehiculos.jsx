@@ -13,7 +13,8 @@ export function Vehiculos() {
       try {
         // 
         const response = await axios.get('/App/camionetas');
-        setCamionetas(response.data);
+        const data = response.data?.data ?? [];
+        setCamionetas(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Error al obtener las camionetas:", err);
         setError("No se pudo cargar la lista de camionetas.");

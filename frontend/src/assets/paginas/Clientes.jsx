@@ -13,7 +13,8 @@ export function Clientes() {
       try {
         //
         const response = await axios.get('/App/clientes');
-        setClientes(response.data);
+         const data = response.data?.data ?? [];
+        setClientes(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Error al obtener los clientes:", err);
         setError("No se pudo cargar la lista de clientes.");

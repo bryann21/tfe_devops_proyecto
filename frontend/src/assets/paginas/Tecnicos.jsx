@@ -13,7 +13,8 @@ export function Tecnicos() {
       try {
         // 
         const response = await axios.get('/App/tecnicos');
-        setTecnicos(response.data);
+         const data = response.data?.data ?? [];
+        setTecnicos(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Error al obtener los técnicos:", err);
         setError("No se pudo cargar la lista de técnicos.");

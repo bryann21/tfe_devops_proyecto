@@ -13,7 +13,8 @@ export function Planes() {
       try {
         
         const response = await axios.get('/App/planes');
-        setPlanes(response.data);
+         const data = response.data?.data ?? [];
+        setPlanes(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Error al obtener los planes:", err);
         setError("No se pudo cargar la lista de planes.");
