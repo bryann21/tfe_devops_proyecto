@@ -5,7 +5,7 @@ systemctl start docker
 systemctl enable docker
 
 # Inicializar Docker Swarm en el nodo manager
-MANAGER_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+MANAGER_IP=$(curl -s http://172.31.75.164/latest/meta-data/local-ipv4)
 docker swarm init --advertise-addr $MANAGER_IP
 
 mkdir -p /opt/tfe

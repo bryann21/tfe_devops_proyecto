@@ -12,7 +12,7 @@ export function Clientes() {
     const fetchClientes = async () => {
       try {
         //
-        const response = await axios.get("/api/App/clientes");
+        const response = await axios.get('/App/clientes');
         setClientes(response.data);
       } catch (err) {
         console.error("Error al obtener los clientes:", err);

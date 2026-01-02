@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import '../estilos/Departamentos.css'; // (opcional si luego quieres agregar estilos)
+import api from "../api/axios";
 
 export function Departamentos() {
   const [departamentos, setDepartamentos] = useState([]);
@@ -11,8 +12,9 @@ export function Departamentos() {
   useEffect(() => {
     const fetchDepartamentos = async () => {
       try {
-        const response = await axios.get("/api/App/departamentos");
+        const response = await axios.get('/App/departamentos');
         setDepartamentos(response.data);
+        const reponse = await api.get('/App/departamentos');
       } catch (err) {
         console.error("Error al obtener los departamentos:", err);
         setError("No se pudo cargar la lista de departamentos.");

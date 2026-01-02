@@ -12,7 +12,7 @@ export function Vehiculos() {
     const fetchVehiculos = async () => {
       try {
         // 
-        const response = await axios.get("/api/App/camionetas");
+        const response = await axios.get('/App/camionetas');
         setCamionetas(response.data);
       } catch (err) {
         console.error("Error al obtener las camionetas:", err);

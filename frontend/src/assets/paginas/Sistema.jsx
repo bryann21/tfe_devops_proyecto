@@ -12,7 +12,7 @@ export function Sistema() {
     const fetchSistemas = async () => {
       try {
         
-        const response = await axios.get("/api/App/smarts");
+        const response = await axios.get('/App/smarts');
         setSistemas(response.data);
       } catch (err) {
         console.error("Error al obtener los sistemas:", err);

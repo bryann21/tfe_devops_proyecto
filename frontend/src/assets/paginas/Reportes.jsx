@@ -12,7 +12,7 @@ export function Reportes() {
     const fetchReportes = async () => {
       try {
         // 
-        const response = await axios.get("/api/App/danos-dia");
+        const response = await axios.get('/App/danos-dia');
         setReportes(response.data);
       } catch (err) {
         console.error("Error al obtener los reportes:", err);

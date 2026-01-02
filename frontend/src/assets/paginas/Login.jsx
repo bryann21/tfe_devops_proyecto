@@ -11,7 +11,7 @@ export function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await api.post('/api/App/login',{
+      const res = await api.post('/App/login',{
         Usuario: usuario,
         Contrasena: contrasena,
       });

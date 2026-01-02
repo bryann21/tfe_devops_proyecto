@@ -12,7 +12,7 @@ export function Planes() {
     const fetchPlanes = async () => {
       try {
         
-        const response = await axios.get("/api/App/planes");
+        const response = await axios.get('/App/planes');
         setPlanes(response.data);
       } catch (err) {
         console.error("Error al obtener los planes:", err);

@@ -12,7 +12,7 @@ export function Tecnicos() {
     const fetchTecnicos = async () => {
       try {
         // 
-        const response = await axios.get("/api/App/tecnicos");
+        const response = await axios.get('/App/tecnicos');
         setTecnicos(response.data);
       } catch (err) {
         console.error("Error al obtener los técnicos:", err);
