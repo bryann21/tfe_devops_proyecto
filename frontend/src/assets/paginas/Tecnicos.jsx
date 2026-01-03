@@ -12,9 +12,9 @@ export function Tecnicos() {
     const fetchTecnicos = async () => {
       try {
         // 
-        const response = await axios.get('/App/tecnicos');
-         const data = response.data?.data ?? [];
-        setTecnicos(Array.isArray(data) ? data : []);
+        const response = await axios.get("/api/App/tecnicos");
+         const data = response.data;
+        setTecnicos(data);
       } catch (err) {
         console.error("Error al obtener los técnicos:", err);
         setError("No se pudo cargar la lista de técnicos.");

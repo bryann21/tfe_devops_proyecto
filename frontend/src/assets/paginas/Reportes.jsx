@@ -12,9 +12,9 @@ export function Reportes() {
     const fetchReportes = async () => {
       try {
         // 
-        const response = await axios.get('/App/danos-dia');
-        const data = response.data?.data ?? [];
-        setReportes(Array.isArray(data) ? data : []);
+        const response = await axios.get("/api/App/danos-dia");
+        const data = response.data;
+        setReportes(data);
       } catch (err) {
         console.error("Error al obtener los reportes:", err);
         setError("No se pudo cargar la lista de reportes.");

@@ -10,7 +10,7 @@ export function Personal_oficina() {
     const fetchPersonal = async () => {
       try {
         // 
-        const response = await fetch('/App/personal');
+        const response = await fetch("/api/App/personal");
 
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`);

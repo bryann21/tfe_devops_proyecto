@@ -12,9 +12,9 @@ export function Planes() {
     const fetchPlanes = async () => {
       try {
         
-        const response = await axios.get('/App/planes');
-         const data = response.data?.data ?? [];
-        setPlanes(Array.isArray(data) ? data : []);
+        const response = await axios.get("/api/App/planes");
+        const data = response.data;
+        setPlanes(data);
       } catch (err) {
         console.error("Error al obtener los planes:", err);
         setError("No se pudo cargar la lista de planes.");

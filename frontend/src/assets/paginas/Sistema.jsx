@@ -12,9 +12,9 @@ export function Sistema() {
     const fetchSistemas = async () => {
       try {
         
-        const response = await axios.get('/App/smarts');
-        const data = response.data?.data ?? [];
-        setSistemas(Array.isArray(data) ? data : []);
+        const response = await axios.get("/api/App/smarts");
+        const data = response.data;
+        setSistemas(data);
       } catch (err) {
         console.error("Error al obtener los sistemas:", err);
         setError("No se pudo cargar la lista de sistemas.");

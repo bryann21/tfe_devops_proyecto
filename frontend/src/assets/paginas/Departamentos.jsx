@@ -11,12 +11,12 @@ export function Departamentos() {
   useEffect(() => {
     const fetchDepartamentos = async () => {
       try {
-        const response = await axios.get('/App/departamentos');
+        const response = await axios.get("/api/App/departamentos");
 
         // 🔑 AQUÍ ESTÁ EL FIX
-        const data = response.data?.data ?? [];
+        const data = response.data;
 
-        setDepartamentos(Array.isArray(data) ? data : []);
+        setDepartamentos(data);
       } catch (err) {
         console.error("Error al obtener los departamentos:", err);
         setError("No se pudo cargar la lista de departamentos.");
